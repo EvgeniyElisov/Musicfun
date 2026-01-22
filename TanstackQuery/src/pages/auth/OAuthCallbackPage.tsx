@@ -1,5 +1,5 @@
 export const OAuthCallbackPage = () => {
   return (
-    <div>OAuthCallbackPage</div>
+    <h2>OAuthCallbackPage</h2>
   )
 }

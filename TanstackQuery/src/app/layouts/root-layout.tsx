@@ -1,9 +1,0 @@
-import { Outlet } from "@tanstack/react-router"
-import { Header } from "../../components/Header/Header"
-
-export const RootLayout = () => (
-    <>
-        <Header renderAccountBar={() => <div>Account</div>} />
-        <Outlet />
-    </>
-)

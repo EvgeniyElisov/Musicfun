@@ -1,4 +1,4 @@
-import { Playlists } from '../components/Playlists'
+import { Playlists } from '../features/Playlists'
 
 export const PlaylistsPage = () => {
 
