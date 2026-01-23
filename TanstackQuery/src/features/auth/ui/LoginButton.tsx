@@ -20,6 +20,10 @@ export const LoginButton = () => {
 
             return response.data
         },
+        onSuccess: (data: { refreshToken: string; accessToken: string }) => {
+            localStorage.setItem("musicfun-refresh-token", data.refreshToken)
+            localStorage.setItem("musicfun-access-token", data.accessToken)
+        },
     })
 
     const handleLoginClick = () => {
