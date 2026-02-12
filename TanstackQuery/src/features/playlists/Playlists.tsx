@@ -1,15 +1,19 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query"
-import { client } from "../shared/api/client"
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query"
+import { client } from "../../shared/api/client"
 import { useState, type ChangeEvent } from "react"
-import { Pagination } from "../shared/ui/Pagination/Pagination"
+import { Pagination } from "../../shared/ui/Pagination/Pagination"
+import { DeletePlaylist } from "./delete-playlist/ui/DeletePlaylist"
 
 type Props = {
     userId?: string
-  }
+    onPlaylistSelected?: (playlistId: string) => void
 
-export const Playlists = ({ userId }: Props) => {
+}
+
+export const Playlists = ({ userId, onPlaylistSelected }: Props) => {
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState("")
+    const queryClient = useQueryClient()
 
     const query = useQuery({
         queryKey: ["playlists", { page, search, userId }],
@@ -41,6 +45,10 @@ export const Playlists = ({ userId }: Props) => {
     if (query.isFetching) return <span>Fetching...</span>
     if (query.isError) return <span>{JSON.stringify(query.error.message)}</span>
 
+    const handleSelectPlaylistClick = (playlistId: string) => {
+        onPlaylistSelected?.(playlistId);
+    }
+
     return (
         <div>
             <div>
@@ -59,7 +67,9 @@ export const Playlists = ({ userId }: Props) => {
             />
             <ul>
                 {query.data?.data.map((playlist) => (
-                    <li>{playlist.attributes.title}</li>
+                    <li key={playlist.id} onClick={() => handleSelectPlaylistClick(playlist.id)}>
+                        {playlist.attributes.title} <DeletePlaylist playlistId={playlist.id} onDeleted={() => queryClient.invalidateQueries({ queryKey: ["playlists"] })} />
+                    </li>
                 ))}
             </ul>
         </div>
